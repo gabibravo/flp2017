@@ -233,7 +233,6 @@
        )
       )
     )
-
   )
 
 ; Funcion que retorna 1 si la variable con un id dado esta defina o 0 en caso de
@@ -244,9 +243,7 @@
     (let ((valor-asignado  (apply-env-auxiliar env id) ))
     (if (not valor-asignado)
         0
-        (if (or (number? valor-asignado) (string? valor-asignado))
-            1
-            0)
+        1
         )
       )
     )
