@@ -59,12 +59,17 @@
                 proc-exp)
     (expression ( "(" expression (arbno expression) ")")
                 app-exp)
+
     
     ; características adicionales
     (expression ("letrec" (arbno identifier "(" (separated-list identifier ",") ")" "=" expression)  "in" expression) 
                 letrec-exp)
     (expression ("arity" "(" identifier ")" )
                 arity-exp)
+    (expression ( "defined-var?" "(" identifier  ")")
+                defined-var?-exp)
+    (expression ("checkeoProcedimientoComoValor" "(" expression ")")
+                check-proc-as-value)
     ;;;;;;
 
     (primitive ("+") add-prim)
@@ -197,6 +202,9 @@
       (arity-exp (nombre-procedimiento)
                  (let ((proc (apply-env  env nombre-procedimiento)))
                    (arity proc)))
+      (defined-var?-exp (id)
+        (defined-var? id env)
+        )
                   
       (app-exp (rator rands)
                (let ((proc (get-procedure-by-arity rator rands env))
@@ -209,6 +217,39 @@
                   (eval-expression letrec-body
                                    (extend-env-recursively proc-names idss bodies env))))))
 
+
+
+; Funcion que retorna 1 si la evaluacion de la expresion exp retorna un procedimiento
+; y 0 en cualquier otro caso
+
+(define check-proc-as-value-
+  (lambda (proc env)
+    (let  ((resultado (eval-expression proc env)))
+      (if (procval? resultado)
+          1
+          0
+       )
+      )
+    )
+
+  )
+
+; Funcion que retorna 1 si la variable con un id dado esta defina o 0 en caso de
+; que no este definida o bien no sea una variable
+
+(define defined-var?
+  (lambda (id env)
+    (let ((valor-asignado  (apply-env-auxiliar env id) ))
+    (if (not valor-asignado)
+        0
+        (if (or (number? valor-asignado) (string? valor-asignado))
+            1
+            0)
+        )
+      )
+    )
+  )
+        
 
 ; Funcion que busca un procedimiento en los ambientes basado en su aridad
 
@@ -224,8 +265,25 @@
          )
        )
   )
-  
-
+ ;; Similar a apply-env, pero en este caso si no encuentra nada definido bajo el id sym retorna falso 
+(define apply-env-auxiliar
+  (lambda (env sym)
+    (cases environment env
+      (empty-env-record ()
+                        #f
+                        )
+      (extended-env-record (syms vals old-env)
+                           (let ((pos (list-find-position sym syms)))
+                             (if (number? pos)
+                                 (list-ref vals pos)
+                                 (apply-env-auxiliar old-env sym))))
+      (recursively-extended-env-record (proc-names idss bodies old-env)
+                                       (let ((pos (list-find-position sym proc-names)))
+                                         (if (number? pos)
+                                             (closure (list-ref idss pos)
+                                                      (list-ref bodies pos)
+                                                      env)
+                                             (apply-env-auxiliar old-env sym)))))))
 ;;;;;;;;;aridad de un procedimiento
 ;; retorna el nuemro de argumentos que recibe un procedimiento dado
 ;; proc: Procedimiento interno de el lenguaje
@@ -348,12 +406,15 @@
      proc-names idss bodies old-env)))
 
 
-;función que busca un símbolo en un ambiente
+;función que busca un símbolo en un ambiente, si no lo encuentra entonces retorna false y muestra un error por pantalla
 (define apply-env
   (lambda (env sym)
     (cases environment env
       (empty-env-record ()
+                        (begin 
                         (eopl:error 'empty-env "No binding for ~s" sym))
+                        #f
+                        )
       (extended-env-record (syms vals old-env)
                            (let ((pos (list-find-position sym syms)))
                              (if (number? pos)

@@ -10,8 +10,17 @@ let
 x = proc (x) x
 in
 (x 1)
-+(2, 3)
+Resultado: 1
 
+let
+x = proc (x y z ) +(+(x,y), z)
+y = 12
+in
+let
+x = proc (x) x
+in
+(x 1 2 3)
+Resultado: 6
 
 let 
 f = proc (x y) +(x,y) 
@@ -29,3 +38,28 @@ let x = proc (x y z a b c d) x in arity (x)
 
 let x = 1 y = 0 in arity(x)
 
+#Ejemplos de checkeo de definicion de variables
+
+let x = proc(x y) w in defined-var?(x)
+Resultado: 0
+
+let x = 5 in defined-var?(x)
+Resultado: 1
+
+let x = +(0,0) in defined-var?(x)
+Resultado: 1
+
+#Ejemplos de checkeo de procedimiento como valor 
+
+
+checkeoProcedimientoComoValor(+(x,y))
+Resultado: 0
+
+checkeoProcedimientoComoValor(proc (a b) +(a,b))
+Resultado: 1
+
+let x = proc (x y z a b c d) x in checkeoProcedimientoComoValor (x)
+Resultado: 1
+
+let x = +(5,3) in checkeoProcedimientoComoValor (x)
+Resultado: 0
