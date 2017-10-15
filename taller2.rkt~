@@ -1,3 +1,61 @@
+
+Conversación abierta. 1 mensaje leído.
+
+Ir al contenido
+Uso de Correo de Universidad del Valle con lectores de pantalla
+Buscar
+
+
+
+Correo
+REDACTAR
+Etiquetas
+Recibidos (237)
+Destacados
+Importantes
+Enviados
+Borradores (73)
+calificaciones correo sig
+copia calificaciones
+Más 
+Hangouts
+
+ 
+ 
+ 
+  Más 
+1 de 682  
+ 
+Imprimir todo En una ventana nueva
+Taller FLP 
+Recibidos
+x 
+
+JUAN GABRIEL RODRIGUEZ BRAVO <juan.g.rodriguez@correounivalle.edu.co>
+Archivos adjuntos14:06 (hace 20 horas)
+
+para mí 
+Taller y archivo racket en el cual hay que implementar los ejercicios.
+
+los ejercicios serian el 3 y 4.
+
+Gracias por la atención prestada
+2 archivos adjuntos 
+ 
+	
+Haz clic aquí para Responder o para Reenviar
+1,04 GB en uso
+Administrar
+Política del programa
+Con la tecnología de Google
+Última actividad de la cuenta: hace 20 horas
+Información detallada
+JUAN GABRIEL RODRIGUEZ BRAVO
+Universidad del Valle
+
+Mostrar detalles
+
+
 #lang eopl
 ;******************************************************************************************
 ;;;;; Interpretador para lenguaje con condicionales, ligadura local, procedimientos y 
@@ -63,8 +121,6 @@
     ; características adicionales
     (expression ("letrec" (arbno identifier "(" (separated-list identifier ",") ")" "=" expression)  "in" expression) 
                 letrec-exp)
-    (expression ("arity" "(" identifier ")" )
-                arity-exp)
     ;;;;;;
 
     (primitive ("+") add-prim)
@@ -194,12 +250,8 @@
                                   (extend-env ids args env))))
       (proc-exp (ids body)
                 (closure ids body env))
-      (arity-exp (nombre-procedimiento)
-                 (let ((proc (apply-env  env nombre-procedimiento)))
-                   (arity proc)))
-                  
       (app-exp (rator rands)
-               (let ((proc (get-procedure-by-arity rator rands env))
+               (let ((proc (eval-expression rator env))
                      (args (eval-rands rands env)))
                  (if (procval? proc)
                      (apply-procedure proc args)
@@ -208,68 +260,6 @@
       (letrec-exp (proc-names idss bodies letrec-body)
                   (eval-expression letrec-body
                                    (extend-env-recursively proc-names idss bodies env))))))
-
-
-; Funcion que busca un procedimiento en los ambientes basado en su aridad
-
-(define get-procedure-by-arity
-       (lambda (proc-name rands env)
-         (let ((proc (eval-expression  proc-name   env))
-               )
-           (if  (= (length rands) (arity proc))
-               proc
-              (get-procedure-by-arity proc-name rands (env->get-parent env))
-               
-           )
-         )
-       )
-  )
-  
-
-;;;;;;;;;aridad de un procedimiento
-;; retorna el nuemro de argumentos que recibe un procedimiento dado
-;; proc: Procedimiento interno de el lenguaje
-
-(define arity
-  (lambda (proc)
-    (if (procval? proc)
-      (length (proc->get-rands proc))
-       (eopl:error 'arity
-                                 "El primer valor encontrado para el identificador dado no es un procedimiento, tiene el valor de: ~s" proc)))
-      )
-
-
-;;;;;;; EXTRACTORES
-
-;;;;PROCEDIMIENTOS;;;;
-;;Retorna la lista de argumentos que recibe un procedimiento
-(define proc->get-rands
-  (lambda (proc)
-    (cases procval proc
-      (closure (ids body env)
-               ids)
-      (else
-       (eopl:error 'proc->get-rands
-                                 "Debe ingresar un procdimiento, ha ingresado: " proc)
-       )
-      )
-    )
-  )
-
-;;;;;AMBIENTES;;;;
-;;Retorna el procedimiento padre de un ambiente
-
-(define env->get-parent
-  (lambda (env)
-    (cases environment env
-      (extended-env-record (syms vals env) env)
-      (recursively-extended-env-record (proc-names idss bodies env) env)
-      (empty-env-record () (eopl:error 'env->get-parent
-                                 "El ambiente vacio no tiene padres" env))
-      
-      )
-    )
-  )
 
 ; funciones auxiliares para aplicar eval-expression a cada elemento de una 
 ; lista de operandos (expresiones)
@@ -425,4 +415,6 @@ add1(x)")
                                                  (lit-exp 200))))
 (define un-programa-dificil
     (a-program una-expresion-dificil))
-(interpretador)
+interpretador_letrec.scm(Origi).txt
+Abrir con Text Editor for Google Drive
+Página 2 de 3
