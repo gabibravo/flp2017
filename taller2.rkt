@@ -1,61 +1,4 @@
 
-Conversación abierta. 1 mensaje leído.
-
-Ir al contenido
-Uso de Correo de Universidad del Valle con lectores de pantalla
-Buscar
-
-
-
-Correo
-REDACTAR
-Etiquetas
-Recibidos (237)
-Destacados
-Importantes
-Enviados
-Borradores (73)
-calificaciones correo sig
-copia calificaciones
-Más 
-Hangouts
-
- 
- 
- 
-  Más 
-1 de 682  
- 
-Imprimir todo En una ventana nueva
-Taller FLP 
-Recibidos
-x 
-
-JUAN GABRIEL RODRIGUEZ BRAVO <juan.g.rodriguez@correounivalle.edu.co>
-Archivos adjuntos14:06 (hace 20 horas)
-
-para mí 
-Taller y archivo racket en el cual hay que implementar los ejercicios.
-
-los ejercicios serian el 3 y 4.
-
-Gracias por la atención prestada
-2 archivos adjuntos 
- 
-	
-Haz clic aquí para Responder o para Reenviar
-1,04 GB en uso
-Administrar
-Política del programa
-Con la tecnología de Google
-Última actividad de la cuenta: hace 20 horas
-Información detallada
-JUAN GABRIEL RODRIGUEZ BRAVO
-Universidad del Valle
-
-Mostrar detalles
-
-
 #lang eopl
 ;******************************************************************************************
 ;;;;; Interpretador para lenguaje con condicionales, ligadura local, procedimientos y 
@@ -415,6 +358,3 @@ add1(x)")
                                                  (lit-exp 200))))
 (define un-programa-dificil
     (a-program una-expresion-dificil))
-interpretador_letrec.scm(Origi).txt
-Abrir con Text Editor for Google Drive
-Página 2 de 3
