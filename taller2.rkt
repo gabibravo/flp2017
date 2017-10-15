@@ -205,6 +205,8 @@
       (defined-var?-exp (id)
         (defined-var? id env)
         )
+      (check-proc-as-value (exp)
+                           ( check-proc-as-value- exp env))
                   
       (app-exp (rator rands)
                (let ((proc (get-procedure-by-arity rator rands env))
